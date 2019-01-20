@@ -1,0 +1,53 @@
+{
+  "name": "xbosstrack-wechat",
+  "version": "1.0.1",
+  "description": "### 声明",
+  "main": "dist/xbosstrack.min.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint src",
+    "test": "BABEL_ENV=test jest",
+    "codecov": "node_modules/codecov/bin/codecov",
+    "dev": "BABEL_ENV=build node_modules/rollup/bin/rollup --config rollup.config.js --environment entry:src/index.js,dest:dist/xbosstrack.js",
+    "build": " BABEL_ENV=build node_modules/rollup/bin/rollup --config rollup.config.js --environment entry:src/index.js,dest:dist/xbosstrack.min.js,uglify",
+    "watch": "BABEL_ENV=build node_modules/rollup/bin/rollup --config rollup.config.js --environment entry:src/index.js,dest:dist/xbosstrack.js -w"
+  },
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "node",
+    "automock": false,
+    "collectCoverage": true,
+    "coverageDirectory": "./coverage/",
+    "testPathIgnorePatterns": [
+      "./__tests__/wx.js"   
+    ],
+    "setupFiles": ["./__tests__/wx.js"]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhengguorong/xbosstrack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhengguorong/xbosstrack/issues"
+  },
+  "homepage": "https://github.com/zhengguorong/xbosstrack#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.4.2",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "babel-preset-latest": "^6.24.1",
+    "codecov": "^3.1.0",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "jest": "^23.5.0",
+    "rollup": "^0.65.2",
+    "rollup-plugin-babel": "^3.0.4",
+    "rollup-plugin-uglify": "^3.0.0"
+  },
+  "dependencies": {}
+}
