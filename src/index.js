@@ -3,10 +3,10 @@ import { getBoundingClientRect, isClickTrackArea, getActivePage } from './helper
 import report from './report';
 
 class Tracker {
-  constructor({ tracks, mode }) {
+  constructor({ tracks, isUsingPlugin }) {
     // 埋点配置信息
     this.tracks = tracks;
-    if (mode === 'plugin') {
+    if (!isUsingPlugin) {
       wrapper.init();
     }
     // 自动给每个page增加elementTracker方法，用作元素埋点
