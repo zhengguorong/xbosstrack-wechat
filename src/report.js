@@ -1,5 +1,3 @@
-import { getActivePage } from './helper';
-
 /**
  * 解析数组类型dataKey
  * 例如list[$INDEX],返回{key:list, index: $INDEX}
@@ -44,11 +42,10 @@ const getGloabData = (key, dataset) => {
   return result;
 };
 
-const getPageData = (key, dataset = {}) => {
-  const { data } = getActivePage();
+const getPageData = (key, dataset = {}, paegData) => {
   const { index } = dataset;
   const keys = key.split('.');
-  let result = data;
+  let result = paegData;
   if (keys.length > -1) {
     keys.forEach((name) => {
       const res = resloveArrayDataKey(name, index);
@@ -59,18 +56,18 @@ const getPageData = (key, dataset = {}) => {
       }
     });
   } else {
-    result = data[key];
+    result = paegData[key];
   }
   return result;
 };
 
-const dataReader = (key, dataset) => {
+const dataReader = (key, dataset, pageData) => {
   try {
     let result = '';
     if (key.indexOf('$') === 0) {
       result = getGloabData(key, dataset);
     } else {
-      result = getPageData(key, dataset);
+      result = getPageData(key, dataset, pageData);
     }
     return result;
   } catch (e) {
@@ -80,12 +77,14 @@ const dataReader = (key, dataset) => {
 };
 
 
-const report = (track) => {
-  console.log(track);
+const report = (track, pageData) => {
+  const { element, method } = track;
+  const logger = [];
   track.dataKeys.forEach(name => {
-    const data = dataReader(name, track.dataset);
-    console.log(name, data);
+    const data = dataReader(name, track.dataset, pageData);
+    logger.push({ element, method, name, data });
   });
+  console.table(logger);
 };
 
 export default report;

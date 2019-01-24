@@ -40,3 +40,19 @@ export const getActivePage = function () {
     }
     return {};
 };
+
+/**
+ * 获取前一页面
+ * @returns {Object} 当前页面Page对象
+ */
+export const getPrevPage = function () {
+    const curPages = getCurrentPages();
+    if (curPages.length > 1) {
+      return curPages[curPages.length - 2];
+    }
+    return {};
+};
+
+export const _isPromise = function (value) {
+    return value && Object.prototype.toString.call(value) === '[object Promise]';
+};
