@@ -49,6 +49,57 @@ const tracks = {
 };
 ```
 
+4、打开控制台，查看是否成功收集
+
+![image](https://user-images.githubusercontent.com/2757932/51715472-d518a200-2073-11e9-874f-9cd1894a779c.png)
+
+element： 触发埋点元素class
+
+method：触发埋点函数
+
+name：收集数据的key值
+
+data：数据对应值
+
+
+
+### 特殊前缀
+
+$APP 表示读取App下定义的数据
+
+$DATASET.xxx 表示获取点击元素，定义data-xxx 中的 xxx值
+
+$INDEX 表示获取列表，当前点击元素的索引
+
+**需要获取$INDEX时，需要在wxml中加入data-index={{index}}标记**
+
+```
+<view class='playing-item' data-index="{{index}}" wx:for='{{playingFilms}}'></view>
+```
+
+
+
+### 兼容插件模式
+
+由于SDK会改写Page对象，如果使用了插件，微信会禁止改写，可以通过以下方式改造。
+
+```
+// 初始化插件模式
+const tracker = new Tracker({ tracks: trackConfig, isUsingPlugin: true });
+
+// 将原来的App包装
+tracker.createApp({
+    
+})
+
+// 将原Page包装
+tracker.createPage({
+    
+})
+```
+
+
+
 
 
 ### 方案实现说明
