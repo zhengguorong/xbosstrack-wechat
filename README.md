@@ -49,7 +49,15 @@ const tracks = {
 };
 ```
 
-4、打开控制台，查看是否成功收集
+4、在wxml最外层插入监听方法
+
+```
+<view catchtap='elementTracker'>
+	<view></view>
+</view>
+```
+
+打开控制台，查看是否成功收集
 
 ![image](https://user-images.githubusercontent.com/2757932/51715472-d518a200-2073-11e9-874f-9cd1894a779c.png)
 
