@@ -116,3 +116,7 @@ tracker.createPage({
 
 [DEMO](https://github.com/zhengguorong/maizuo_wechat)
 
+## License
+
+[996 License](https://github.com/zhengguorong/xbosstrack-wechat/blob/master/LICENSE)
+
