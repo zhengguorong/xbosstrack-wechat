@@ -71,6 +71,25 @@ data：数据对应值
 
 
 
+5、如果你要兼听组件内元素
+
+在elementTracks里加入
+
+```javascript
+{
+  element: '.page >>> .sub-component',
+    dataKeys: ['name', '$DATASET.test']
+}
+```
+
+.page表示包裹组件的元素class，或者你可以使用id或者任意选择器
+
+.sub-component 表示监听组件内元素class名
+
+核心还是利用了微信提供的选择器，可以[参考文档](https://developers.weixin.qq.com/miniprogram/dev/api/wxml/SelectorQuery.selectAll.html)
+
+
+
 ### 特殊前缀
 
 $APP 表示读取App下定义的数据
