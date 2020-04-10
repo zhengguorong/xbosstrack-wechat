@@ -11,6 +11,8 @@ class Tracker extends Wrapper {
     this.addPageMethodExtra(this.elementTracker());
     // 自动给page下预先定义的方法进行监听，用作方法执行埋点
     this.addPageMethodWrapper(this.methodTracker());
+    // 自动给page component下预先定义的方法进行监听，用作方法执行埋点
+    this.addComponentMethodWrapper(this.comMethodTracker());
   }
 
   elementTracker() {
@@ -32,11 +34,27 @@ class Tracker extends Wrapper {
   }
 
   methodTracker() {
-    return (page, methodName) => {
+    return (page, component, methodName, args = {}) => {
       const tracks = this.findActivePageTracks('method');
       const { data } = getActivePage();
+      const { dataset } = args.currentTarget || {};
       tracks.forEach((track) => {
         if (track.method === methodName) {
+          track.dataset = dataset;
+          report(track, data);
+        }
+      });
+    };
+  }
+
+  comMethodTracker() {
+    return (page, component, methodName, args = {}) => {
+      const tracks = this.findActivePageTracks('comMethod');
+      const data = component.data;
+      const { dataset } = args.currentTarget || {};
+      tracks.forEach((track) => {
+        if (track.method === methodName) {
+          track.dataset = dataset;
           report(track, data);
         }
       });
@@ -45,7 +63,7 @@ class Tracker extends Wrapper {
 
   /**
    * 获取当前页面的埋点配置
-   * @param {String} type 返回的埋点配置，options: method/element
+   * @param {String} type 返回的埋点配置，options: method/element/comMethod
    * @returns {Object}
    */
   findActivePageTracks(type) {
@@ -57,6 +75,8 @@ class Tracker extends Wrapper {
         tracks = pageTrackConfig.methodTracks || [];
       } else if (type === 'element') {
         tracks = pageTrackConfig.elementTracks || [];
+      }else if (type === 'comMethod') {
+        tracks = pageTrackConfig.comMethodTracks || [];
       }
       return tracks;
     } catch (e) {
