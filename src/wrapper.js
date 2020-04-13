@@ -1,6 +1,6 @@
 const globalVarApp = App; // 小程序原App对象
 const globalVarPage = Page; // 小程序原Page对象
-const globalVarComponent = Component; // 小程序元Component对象
+const globalVarComponent = Component; // 小程序原Component对象
 
 class Wrapper {
   constructor(isUsingPlugin) {
