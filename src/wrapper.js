@@ -1,5 +1,6 @@
 const globalVarApp = App; // 小程序原App对象
 const globalVarPage = Page; // 小程序原Page对象
+const globalVarComponent = Component; // 小程序原Component对象
 
 class Wrapper {
   constructor(isUsingPlugin) {
@@ -7,9 +8,12 @@ class Wrapper {
     this.injectAppMethods = [];
     this.extraPageMethods = [];
     this.extraAppMethods = [];
+    this.injectComponentMethods = [];
+    this.extraComponentMethods = [];
     if (!isUsingPlugin) {
       App = (app) => globalVarApp(this._create(app, this.injectAppMethods, this.extraAppMethods));
       Page = (page) => globalVarPage(this._create(page, this.injectPageMethods, this.extraPageMethods));
+      Component = (component) => globalVarPage(this._createComponent(component.methods, component, this.injectComponentMethods, this.extraComponentMethods));
     }
   }
 
@@ -19,13 +23,13 @@ class Wrapper {
    * @param {String} methodName 需要包装的函数名
    * @param {Array} methods 函数执行前执行任务
    */
-  _wrapTargetMethod(target, methodName, methods = []) {
+  _wrapTargetMethod(target, component, methodName, methods = []) {
     const methodFunction = target[methodName];
     target[methodName] = function _aa(...args) {
       const result = methodFunction && methodFunction.apply(this, args);
       const methodExcuter = () => {
         methods.forEach((fn) => {
-          fn.apply(this, [target, methodName, ...args]);
+          fn.apply(this, [target, component, methodName, ...args]);
         });
       };
       try {
@@ -55,7 +59,7 @@ class Wrapper {
       .forEach(fn => {
         const methodName = fn.name;
         target[methodName] = fn;
-    });
+      });
   }
 
   /**
@@ -66,7 +70,17 @@ class Wrapper {
     Object.keys(target)
       .filter((prop) => typeof target[prop] === 'function')
       .forEach((methodName) => {
-        this._wrapTargetMethod(target, methodName, injectMethods);
+        this._wrapTargetMethod(target, null, methodName, injectMethods);
+      });
+    this._addExtraMethod(target, extraMethods);
+    return target;
+  }
+
+  _createComponent(target, component, injectMethods, extraMethods) {
+    Object.keys(target)
+      .filter((prop) => typeof target[prop] === 'function')
+      .forEach((methodName) => {
+        this._wrapTargetMethod(target, component, methodName, injectMethods);
       });
     this._addExtraMethod(target, extraMethods);
     return target;
@@ -74,6 +88,10 @@ class Wrapper {
 
   addPageMethodWrapper(fn) {
     this.injectPageMethods.push(fn);
+  }
+
+  addComponentMethodWrapper(fn) {
+    this.injectComponentMethods.push(fn);
   }
 
   addAppMethodWrapper(fn) {
