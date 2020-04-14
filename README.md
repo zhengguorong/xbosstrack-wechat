@@ -23,7 +23,7 @@ new Tracker({ tracks: trackConfig });
  * path 页面路径
  * elementTracks 页面元素埋点
  * methodTracks 执行函数埋点
-  comMethodTracks: 执行组件内函数埋点
+ * comMethodTracks: 执行组件内函数埋点
  */
 const tracks = {
   path: 'pages/film/index',
@@ -128,6 +128,11 @@ tracker.createApp({
 
 // 将原Page包装
 tracker.createPage({
+    
+})
+
+// 将原Component包装
+tracker.createComponent({
     
 })
 ```
