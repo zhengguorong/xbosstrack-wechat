@@ -47,10 +47,15 @@ class Tracker extends Wrapper {
     };
   }
 
+   /**
+   * function函数改变上下文this指针，指向组件
+   */
+
   comMethodTracker() {
-    return (page, component, methodName, args = {}) => {
-      const tracks = this.findActivePageTracks('comMethod');
-      const data = component.data;
+    var self = this
+    return function(page, component, methodName, args = {}) {
+      const tracks = self.findActivePageTracks('comMethod');
+      const data = this.data;
       const { dataset } = args.currentTarget || {};
       tracks.forEach((track) => {
         if (track.method === methodName) {
